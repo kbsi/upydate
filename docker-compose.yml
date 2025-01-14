@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./src/backend:/app/backend
+      - ./src/library:/app/library
+      - ./src/Pipfile:/app/Pipfile
+      - ./src/Pipfile.lock:/app/Pipfile.lock
+    environment:
+      - FLASK_ENV=development
+
+  frontend:
+    build:
+      context: .
+      dockerfile: front.dockerfile
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    volumes:
+      - ./src/front:/app/front
+      - ./src/Pipfile:/app/Pipfile
+      - ./src/Pipfile.lock:/app/Pipfile.lock
